@@ -32,24 +32,24 @@ class LocationInputState extends State<LocationInput> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       height: 60,
       transform: Matrix4.translationValues(0, -10, 0),
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
       decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(14),
-            topRight: Radius.circular(14),
-          ),),
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(14),
+          topRight: Radius.circular(14),
+        ),
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: SizedBox(
               height: 40,
-              child: TextField(
+              child: TextFormField(
                 onChanged: (value) async {
                   final isEmpty = value.isEmpty;
                   setState(() {
@@ -60,15 +60,19 @@ class LocationInputState extends State<LocationInput> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,
                 maxLines: 4,
-                onTapOutside: (event) {
-                  
-                },
                 minLines: 1,
                 focusNode: focusNode,
                 controller: textEditingController,
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
-                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                  border: OutlineInputBorder(
+                    // borderSide: BorderSide(
+                    //   // color: colorIconSecondary,
+                    //   width: 0,
+                    // ),
+                    borderRadius: BorderRadius.circular(1000),
+                  ),
                   hintStyle: TextStyle(
                     fontSize: 14,
                     color: hexToColor("717171"),
@@ -76,7 +80,20 @@ class LocationInputState extends State<LocationInput> {
                   fillColor: CommonColor.weakBackgroundColor,
                   filled: true,
                   isDense: true,
-                  hintText: "Cari lokasi...", // Search POI by keyword "Search for location"
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      textEditingController.clear();
+                      setState(() {
+                        isEmptyInput = true;
+                      });
+                      widget.onChange("");
+                    },
+                    icon: const Icon(
+                      Icons.clear_rounded,
+                    ),
+                  ),
+                  hintText:
+                      "Cari lokasi...", // Search POI by keyword "Search for location"
                   prefixIcon: Icon(
                     Icons.search,
                     color: hexToColor("717171"),
@@ -85,22 +102,22 @@ class LocationInputState extends State<LocationInput> {
               ),
             ),
           ),
-          if (!isEmptyInput)
-            Container(
-                margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: GestureDetector(
-                  onTap: () {
-                    textEditingController.text = "";
-                    setState(() {
-                      isEmptyInput = true;
-                    });
-                    widget.onChange("");
-                  },
-                  child: Text(TIM_t("取消"), // "cancel"
-                      style: const TextStyle(
-                        color: CommonColor.weakTextColor,
-                      )),
-                ))
+          // if (!isEmptyInput)
+          //   Container(
+          //       margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+          //       child: GestureDetector(
+          //         onTap: () {
+          //           textEditingController.text = "";
+          //           setState(() {
+          //             isEmptyInput = true;
+          //           });
+          //           widget.onChange("");
+          //         },
+          //         child: Text(TIM_t("取消"), // "cancel"
+          //             style: const TextStyle(
+          //               color: CommonColor.weakTextColor,
+          //             )),
+          //       ))
         ],
       ),
     );
