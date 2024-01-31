@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform;
-import 'package:location/location.dart' as flutter_location;
+import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tim_ui_kit_lbs_plugin/utils/tim_location_model.dart';
 import 'package:tim_ui_kit_lbs_plugin/utils/utils.dart';
@@ -37,9 +37,14 @@ class LocationUtils {
   static Future<TIMCoordinate?> getAddressByFlutter() async {
     final isAvailable = await LocationUtils.requestLocationPermission();
     if (isAvailable == true) {
-      flutter_location.Location location = flutter_location.Location();
-      final locationData = await location.getLocation();
-      return TIMCoordinate(locationData.latitude!, locationData.longitude!);
+      final locationData = await GeolocatorPlatform.instance.getCurrentPosition(
+          locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+      ));
+      return TIMCoordinate(
+        locationData.latitude,
+        locationData.longitude,
+      );
     }
     return null;
   }
