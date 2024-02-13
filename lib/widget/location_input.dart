@@ -4,12 +4,14 @@ import 'package:tencent_im_base/tencent_im_base.dart';
 class LocationInput extends StatefulWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChange;
+  final String? language;
 
-  const LocationInput({
-    required this.controller,
-    Key? key,
-    required this.onChange,
-  }) : super(key: key);
+  const LocationInput(
+      {required this.controller,
+      Key? key,
+      required this.onChange,
+      this.language})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => LocationInputState();
@@ -93,7 +95,7 @@ class LocationInputState extends State<LocationInput> {
                     ),
                   ),
                   hintText:
-                      "Cari lokasi...", // Search POI by keyword "Search for location"
+                      getHintText(), // Search POI by keyword "Search for location"
                   prefixIcon: Icon(
                     Icons.search,
                     color: hexToColor("717171"),
@@ -121,5 +123,13 @@ class LocationInputState extends State<LocationInput> {
         ],
       ),
     );
+  }
+
+  String getHintText() {
+    if (widget.language != null) {
+      return widget.language == 'en' ? "Search location..." : "Cari lokasi...";
+    } else {
+      return "Cari lokasi...";
+    }
   }
 }

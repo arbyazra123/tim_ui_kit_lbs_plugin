@@ -34,6 +34,7 @@ class LocationPicker extends StatefulWidget {
   final ButtonStyle? sendButtonStyle;
   final bool? isLoading;
   final Widget loadingWidget;
+  final String? language;
 
   /// TIMMapWidget with the inherited map widget by the Map SDK you chose.
   /// 传入根据选定地图SDK实例化后的地图组件TIMMapWidget
@@ -44,18 +45,19 @@ class LocationPicker extends StatefulWidget {
               TIMRegionChangeReason regionChangeReason)
           onMapMoveEnd) mapBuilder;
 
-  const LocationPicker({
-    Key? key,
-    required this.onChange,
-    required this.mapBuilder,
-    required this.locationUtils,
-    required this.loadingWidget,
-    this.initCoordinate,
-    this.isUseMapSDKLocation = true,
-    this.sendButton,
-    this.sendButtonStyle,
-    this.isLoading,
-  }) : super(key: key);
+  const LocationPicker(
+      {Key? key,
+      required this.onChange,
+      required this.mapBuilder,
+      required this.locationUtils,
+      required this.loadingWidget,
+      this.initCoordinate,
+      this.isUseMapSDKLocation = true,
+      this.sendButton,
+      this.sendButtonStyle,
+      this.isLoading,
+      this.language})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => LocationPickerState();
@@ -325,7 +327,7 @@ class LocationPickerState extends State<LocationPicker> {
                                   : _onSendMsg,
                               child: Visibility(
                                 visible: widget.isLoading ?? false,
-                                replacement: const Text("Kirim"),
+                                replacement: getTextReplacement(),
                                 child: widget.loadingWidget,
                               ), // "send"
                             ),
@@ -341,6 +343,7 @@ class LocationPickerState extends State<LocationPicker> {
                           debouncePOICitySearch(keyword);
                         },
                         controller: inputKeywordEditingController,
+                        language: widget.language,
                       ),
                       Container(
                         constraints: BoxConstraints(
@@ -369,5 +372,13 @@ class LocationPickerState extends State<LocationPicker> {
         ),
       ),
     );
+  }
+
+  Text getTextReplacement() {
+    if (widget.language != null) {
+      return Text(widget.language == "en" ? "Send" : "Kirim");
+    } else {
+      return const Text('Kirim');
+    }
   }
 }
