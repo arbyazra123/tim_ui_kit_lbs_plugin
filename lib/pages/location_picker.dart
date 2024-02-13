@@ -305,7 +305,7 @@ class LocationPickerState extends State<LocationPicker> {
                         child: GestureDetector(
                           onTap: () => Navigator.pop(context),
                           child: Text(
-                            TIM_t("Batal"), // "cancel"
+                            TIM_t(getTextCancel()), // "cancel"
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 16),
                           ),
@@ -372,6 +372,14 @@ class LocationPickerState extends State<LocationPicker> {
         ),
       ),
     );
+  }
+
+  String getTextCancel() {
+    if (widget.language != null) {
+      return widget.language == "en" ? "Cancel" : "Batal";
+    } else {
+      return "Batal";
+    }
   }
 
   Text getTextReplacement() {
