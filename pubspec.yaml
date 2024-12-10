@@ -33,7 +33,7 @@ dependencies:
   url_launcher: ^6.0.20
   cupertino_icons: ^1.0.2
   permission_handler: ^10.0.0
-  tencent_im_base: ^3.0.0
+  tencent_im_base: 8.0.0
 
 dev_dependencies:
   flutter_test:
